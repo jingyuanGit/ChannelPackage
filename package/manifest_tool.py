@@ -8,6 +8,10 @@ manifest_file_name = 'AndroidManifest.xml'
 android_name = name_space + 'name'
 
 
+def config_channel_manifest_config(manifest_tree, channel_config, config_def):
+    config_def(manifest_tree, channel_config)
+
+
 def insert_nope(android_nodes, platform_nodes, insert_parent):
     for i in range(len(platform_nodes)):
         node_name_p = platform_nodes[i].get(android_name)
@@ -20,6 +24,7 @@ def insert_nope(android_nodes, platform_nodes, insert_parent):
                     break
                 if (node_name_p != node_name) and (j == (len(android_nodes) - 1)):
                     insert_parent.append(platform_nodes[i])
+
 
 def get_manifest_tree(android_manifest_path):
     if not os.path.exists(android_manifest_path):
@@ -71,8 +76,8 @@ def merge_manifest(android_tree, platform_manifest):
     insert_nope(android_providers, platform_providers, app_node)
     insert_nope(android_meta_datas, platform_meta_datas, app_node)
     insert_nope(android_uses_librarys, platform_uses_librarys, app_node)
-    insert_nope(android_supports_screens,platform_supports_screens,android_root)
-    insert_nope(android_uses_feature ,platform_uses_feature,android_root)
+    insert_nope(android_supports_screens, platform_supports_screens, android_root)
+    insert_nope(android_uses_feature, platform_uses_feature, android_root)
     print "合并清单文件完成"
     return android_tree,
 
@@ -113,4 +118,3 @@ if __name__ == '__main__':
         platform_meta_datas = manifest_tree.xpath('/manifest/uses-feature')
         for i in range(len(platform_meta_datas)):
             print platform_meta_datas[i].get(android_name)
-
